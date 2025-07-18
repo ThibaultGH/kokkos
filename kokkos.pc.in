@@ -1,0 +1,11 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
+
+Name: Kokkos
+Description: The Kokkos C++ Performance Portability Programming Model
+Version: @Kokkos_VERSION@
+
+Requires: @KOKKOS_PKG_DEPS@
+Cflags: -I${includedir} @KOKKOS_CXX_FLAGS@
+Libs: -L${libdir} -lkokkoscore @KOKKOS_LINK_FLAGS@

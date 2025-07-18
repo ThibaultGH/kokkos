@@ -228,6 +228,31 @@ kokkos_setup_build_environment()
 # 6) Recurse into subdirectories and configure individual libraries
 # 7) Export and install targets
 
+option(KOKKOS_GENERATE_PKGCONFIG "Generate a kokkos.pc file for pkg-config" OFF)
+
+if(KOKKOS_GENERATE_PKGCONFIG)
+  message(STATUS "Will generate kokkos.pc for pkg-config support")
+
+  # Collect the compilation and linkage flags of the Kokkos target
+  set(KOKKOS_CXX_FLAGS "")
+  set(KOKKOS_LINK_FLAGS "")
+  set(KOKKOS_PKG_DEPS "") # Pour les dépendances comme TBB, HWLOC...
+
+  # Replace the variables in the template and create the kokkos.pc file in the build directory
+  configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/kokkos.pc.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/kokkos.pc"
+    @ONLY
+  )
+
+  # Install the generated kokkos.pc file to the appropriate location
+  install(
+    FILES "${CMAKE_CURRENT_BINARY_DIR}/kokkos.pc"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig"
+  )
+
+endif()
+
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
 set(KOKKOS_COMPONENT_LIBRARIES kokkoscore kokkoscontainers kokkosalgorithms kokkossimd)
